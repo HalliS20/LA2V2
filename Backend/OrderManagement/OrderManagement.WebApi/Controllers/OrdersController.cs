@@ -5,7 +5,7 @@ using OrderManagement.Services.Interfaces;
 
 namespace OrderManagement.Controllers
 {
-//    [Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
@@ -46,6 +46,7 @@ namespace OrderManagement.Controllers
         public IActionResult CreateNewOrder([FromBody] OrderInputModel orderInputModel)
         {
             var success = _orderService.CreateNewOrder(orderInputModel);
+            Console.WriteLine("Creating new order in repository");
 
             if (!success)
             {

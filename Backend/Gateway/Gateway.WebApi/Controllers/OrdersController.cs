@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
@@ -48,7 +48,7 @@ public class OrdersController : ControllerBase
         if (response.StatusCode == HttpStatusCode.Unauthorized) return Unauthorized();
         if (!response.IsSuccessStatusCode) return BadRequest("One or more products with ID in items does not exist");
 
-        var newOrder = await response.Content.ReadFromJsonAsync<IEnumerable<OrderInputModel>>();
+        var newOrder = await response.Content.ReadFromJsonAsync<OrderInputModel>();
 
         return Ok(newOrder);
     }

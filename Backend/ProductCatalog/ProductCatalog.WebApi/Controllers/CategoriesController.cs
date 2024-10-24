@@ -5,7 +5,7 @@ using ProductCatalog.Services.Interfaces;
 
 namespace ProductCatalog.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CategoriesController(ICategoryService categoryService) : ControllerBase
