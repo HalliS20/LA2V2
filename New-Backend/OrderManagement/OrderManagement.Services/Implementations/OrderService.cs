@@ -21,6 +21,7 @@ namespace OrderManagement.Services.Implementations
 
         public bool CreateNewOrder(OrderInputModel orderInputModel)
         {
+            Console.WriteLine("Creating new order in service");
             return _orderRepository.CreateNewOrder(orderInputModel);
         }
 
