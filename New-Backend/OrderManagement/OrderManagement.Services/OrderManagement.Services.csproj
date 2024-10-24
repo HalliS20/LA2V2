@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <Folder Include="Implementations\" />
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\OrderManagement.Models\OrderManagement.Models.csproj" />
+      <ProjectReference Include="..\OrderManagement.Repository\OrderManagement.Repository.csproj" />
+    </ItemGroup>
+
+</Project>

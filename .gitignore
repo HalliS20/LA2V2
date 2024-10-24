@@ -1,0 +1,13 @@
+bin/
+*/bin/
+*/*/bin/
+obj/
+*/obj/
+*/*/obj/
+.vscode
+.vs
+.idea
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
+/Database/pgdata/postgres_data/*

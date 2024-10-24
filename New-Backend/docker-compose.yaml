@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: admin
+            POSTGRES_DB: ECommerce
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U admin -d ECommerce"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - microservices-network
+
+    gateway:
+        build:
+            context: ./Gateway
+            dockerfile: Dockerfile
+        container_name: gateway
+        ports:
+            - "6060:6060"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:6060
+            - ServiceIp__Orders=http://orders:4040
+            - ServiceIp__Products=http://products:5050
+        depends_on:
+            - orders
+            - products
+        networks:
+            - microservices-network
+
+    orders:
+        build:
+            context: ./OrderManagement
+            dockerfile: Dockerfile
+        container_name: orders
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:4040
+            - ConnectionStrings__ECommerceDatabase=Host=postgres;Port=5432;Database=ECommerce;Username=admin;Password=admin
+
+        ports:
+            - "4040:4040"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - microservices-network
+
+    products:
+        build:
+            context: ./ProductCatalog
+            dockerfile: Dockerfile
+        container_name: products
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:5050
+            - ConnectionStrings__ECommerceDatabase=Host=postgres;Port=5432;Database=ECommerce;Username=admin;Password=admin
+        ports:
+            - "5050:5050"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - microservices-network
+
+networks:
+    microservices-network:
+        driver: bridge
+
+volumes:
+    postgres_data:
