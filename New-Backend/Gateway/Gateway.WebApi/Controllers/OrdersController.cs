@@ -21,7 +21,7 @@ public class OrdersController : ControllerBase
     {
         _httpClient = httpClient;
         var token = authService.RetrieveAccessToken("https://orders-web-api.com").Result;
-        _httpClient.BaseAddress = new Uri(serviceIpOptions.Orders+ "/api/orders/");
+        _httpClient.BaseAddress = new Uri(serviceIpOptions.Orders + "/api/orders/");
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
     }
 
@@ -48,7 +48,7 @@ public class OrdersController : ControllerBase
         if (response.StatusCode == HttpStatusCode.Unauthorized) return Unauthorized();
         if (!response.IsSuccessStatusCode) return BadRequest("One or more products with ID in items does not exist");
 
-        var newOrder = await response.Content.ReadFromJsonAsync<IEnumerable<OrderDto>>();
+        var newOrder = await response.Content.ReadFromJsonAsync<IEnumerable<OrderInputModel>>();
 
         return Ok(newOrder);
     }
